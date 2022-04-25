@@ -9,13 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static const List<Widget> _homeScreens = [
-    SizedBox.shrink(),
-    SizedBox.shrink(),
-    SizedBox.shrink(),
-    SizedBox.shrink(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +22,7 @@ class MyApp extends StatelessWidget {
           seedColor: const Color(0xFF6a040f),
         ),
       ),
-      home: const HomeBase(screens: _homeScreens),
+      home: const HomeBase(),
     );
   }
 }

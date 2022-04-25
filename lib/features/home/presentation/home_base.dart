@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class HomeBase extends StatefulWidget {
-  const HomeBase({Key? key, required this.screens}) : super(key: key);
+import '../../category/presentation/category_list.dart';
 
-  final List<Widget> screens;
+class HomeBase extends StatefulWidget {
+  const HomeBase({Key? key}) : super(key: key);
 
   @override
   State<HomeBase> createState() => _HomeBaseState();
@@ -13,12 +13,19 @@ class _HomeBaseState extends State<HomeBase> {
   int _currentPage = 0;
   final PageStorageBucket _storageBucket = PageStorageBucket();
 
+  static const List<Widget> _homeScreens = [
+    CategoryList(),
+    SizedBox.shrink(),
+    SizedBox.shrink(),
+    SizedBox.shrink(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageStorage(
         bucket: _storageBucket,
-        child: widget.screens[_currentPage],
+        child: _homeScreens[_currentPage],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentPage,

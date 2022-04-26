@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../category/presentation/category_list.dart';
+import 'more_section.dart';
 import 'search_section.dart';
 
 class HomeBase extends StatefulWidget {
@@ -18,7 +19,7 @@ class _HomeBaseState extends State<HomeBase> {
     CategoryList(),
     SearchSection(),
     SizedBox.shrink(),
-    SizedBox.shrink(),
+    MoreSection(),
   ];
 
   @override

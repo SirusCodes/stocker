@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../../utils/color_serializer.dart';
+import '../../../../../utils/color_serializer.dart';
 
 part 'product_model.g.dart';
 

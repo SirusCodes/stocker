@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../../utils/color_serializer.dart';
+import '../../../../../utils/color_serializer.dart';
 
 part 'category_model.g.dart';
 

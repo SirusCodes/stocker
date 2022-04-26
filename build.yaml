@@ -3,4 +3,4 @@ targets:
     builders:
       json_serializable|json_serializable:
         generate_for:
-          - "**/domain/**"
+          - "**/models/**"

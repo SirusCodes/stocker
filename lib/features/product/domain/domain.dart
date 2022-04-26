@@ -1,1 +1,1 @@
-export 'product_model/product_model.dart';
+export 'models/product_model/product_model.dart';

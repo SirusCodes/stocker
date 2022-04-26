@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../category/presentation/category_list.dart';
-import 'more_section.dart';
-import 'search_section.dart';
+import '../widgets/category_list_section.dart';
+import '../widgets/more_section.dart';
+import '../widgets/search_section.dart';
 
 class HomeBase extends StatefulWidget {
   const HomeBase({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class _HomeBaseState extends State<HomeBase> {
   final PageStorageBucket _storageBucket = PageStorageBucket();
 
   static const List<Widget> _homeScreens = [
-    CategoryList(),
+    CategoryListSection(),
     SearchSection(),
     SizedBox.shrink(),
     MoreSection(),

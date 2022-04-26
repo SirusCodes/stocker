@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../enums/enums.dart';
 import '../../../extensions/extensions.dart';
 import '../../../shared_widgets/sort_button.dart';
-import '../domain/domain.dart';
+import '../../category/domain/domain.dart';
 
 const _categoryList = [
   CategoryModel(name: "Name zero", color: Colors.amber, productCount: 10),
@@ -11,8 +11,8 @@ const _categoryList = [
   CategoryModel(name: "Name two", color: Colors.blue, productCount: 55),
 ];
 
-class CategoryList extends StatelessWidget {
-  const CategoryList({Key? key}) : super(key: key);
+class CategoryListSection extends StatelessWidget {
+  const CategoryListSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stocker_appwrite/shared_widgets/sort_button.dart';
 
 import '../../../enums/enums.dart';
 import '../../../extensions/extensions.dart';
+import '../../../shared_widgets/sort_button.dart';
 import '../domain/domain.dart';
 
 const _categoryList = [

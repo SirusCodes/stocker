@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../category/presentation/category_list.dart';
+import 'search_section.dart';
 
 class HomeBase extends StatefulWidget {
   const HomeBase({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class _HomeBaseState extends State<HomeBase> {
 
   static const List<Widget> _homeScreens = [
     CategoryList(),
-    SizedBox.shrink(),
+    SearchSection(),
     SizedBox.shrink(),
     SizedBox.shrink(),
   ];

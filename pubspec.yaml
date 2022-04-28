@@ -32,6 +32,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   json_annotation: ^4.4.0
   equatable: ^2.0.3
+  flutter_riverpod: ^1.0.3
 
 dev_dependencies:
   flutter_test:

@@ -27,6 +27,7 @@ class CategoryListSection extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {},
+              tooltip: "Search category ",
               icon: const Icon(Icons.search_rounded),
             ),
           ],

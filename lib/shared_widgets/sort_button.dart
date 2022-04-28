@@ -14,48 +14,48 @@ class SortButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconTheme(
-      data: IconThemeData(color: Theme.of(context).iconTheme.color),
-      child: PopupMenuButton<Sort>(
-        itemBuilder: (context) => [
-          _buildPopupMenuItem(
-            value: Sort.ascAlpha,
-            icon: const Icon(Icons.keyboard_arrow_up_rounded),
-            text: "Aplhabets",
-          ),
-          _buildPopupMenuItem(
-            icon: const Icon(Icons.keyboard_arrow_down_rounded),
-            text: "Aplhabets",
-            value: Sort.dscAlpha,
-          ),
-        ],
-        icon: Icon(
-          Icons.sort_rounded,
-          color: Theme.of(context).colorScheme.onPrimary,
+    return PopupMenuButton<Sort>(
+      itemBuilder: (context) => [
+        _buildPopupMenuItem(
+          context,
+          value: Sort.ascAlpha,
+          icon: const Icon(Icons.keyboard_arrow_up_rounded),
+          text: "Aplhabets",
         ),
-        initialValue: selectedSort,
-        onSelected: onSelected,
-      ),
+        _buildPopupMenuItem(
+          context,
+          icon: const Icon(Icons.keyboard_arrow_down_rounded),
+          text: "Aplhabets",
+          value: Sort.dscAlpha,
+        ),
+      ],
+      icon: const Icon(Icons.sort_rounded),
+      initialValue: selectedSort,
+      onSelected: onSelected,
     );
   }
 
-  PopupMenuItem<Sort> _buildPopupMenuItem({
+  PopupMenuItem<Sort> _buildPopupMenuItem(
+    BuildContext context, {
     required Icon icon,
     required String text,
     required Sort value,
   }) {
     return PopupMenuItem(
       value: value,
-      child: Row(
-        children: [
-          icon,
-          const SizedBox(width: 5),
-          Text(text),
-          if (selectedSort == value) ...[
-            const Spacer(),
-            const Icon(Icons.check_rounded)
-          ]
-        ],
+      child: IconTheme(
+        data: Theme.of(context).iconTheme,
+        child: Row(
+          children: [
+            icon,
+            const SizedBox(width: 5),
+            Text(text),
+            if (selectedSort == value) ...[
+              const Spacer(),
+              const Icon(Icons.check_rounded)
+            ]
+          ],
+        ),
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../enums/enums.dart';
 import '../../../extensions/extensions.dart';
-import '../../../shared_widgets/sort_button.dart';
+import '../../../shared/widgets/sort_button.dart';
 import '../../category/domain/domain.dart';
 
 const _categoryList = [

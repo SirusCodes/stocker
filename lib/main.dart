@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stocker_appwrite/utils/route_generator.dart';
 
 import 'features/home/presentation/home_base.dart';
+import 'shared/providers/theme_provider.dart';
+import 'utils/themes.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
     return MaterialApp(
       title: 'Stocker',
-      theme: ThemeData(
-        useMaterial3: true,
-        navigationBarTheme: const NavigationBarThemeData(
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6a040f),
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          border: OutlineInputBorder(),
-        ),
-      ),
+      themeMode: themeMode,
+      theme: theme,
+      darkTheme: darkTheme,
+      onGenerateRoute: RouteGenerator.onGenerateRoute,
       home: const HomeBase(),
     );
   }

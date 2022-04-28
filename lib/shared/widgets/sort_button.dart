@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../enums/enums.dart';
+import '../../enums/enums.dart';
 
 class SortButton extends StatelessWidget {
   const SortButton({

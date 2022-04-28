@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../shared_widgets/product_list_tile.dart';
+import '../../../shared/widgets/product_list_tile.dart';
 import '../../product/domain/domain.dart';
 
 const _mockProducts = [

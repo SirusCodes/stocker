@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../extensions/extensions.dart';
-import '../features/product/domain/domain.dart';
+import '../../extensions/extensions.dart';
+import '../../features/product/domain/domain.dart';
 
 class ProductListTile extends StatelessWidget {
   const ProductListTile({Key? key, required this.product}) : super(key: key);

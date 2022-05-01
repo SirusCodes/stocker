@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/providers/theme_provider.dart';
 import '../../transaction/presentation/transaction_history_screen.dart';
+import '../../users/presentation/profile_screen.dart';
 
 class MoreSection extends StatelessWidget {
   const MoreSection({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class MoreSection extends StatelessWidget {
           leading: const CircleAvatar(child: Icon(Icons.person)),
           title: const Text("Darshan Rander"),
           subtitle: const Text("darshandrander@gmail.com"),
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(context, ProfileScreen.path),
         ),
         ListTile(
           leading: const CircleAvatar(child: Icon(Icons.share_rounded)),

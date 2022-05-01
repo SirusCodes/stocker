@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stocker_appwrite/utils/route_generator.dart';
 
 import 'features/home/presentation/home_base.dart';
 import 'shared/providers/theme_provider.dart';
+import 'utils/route_generator.dart';
 import 'utils/themes.dart';
 
 void main() {

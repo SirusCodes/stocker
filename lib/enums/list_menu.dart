@@ -1,0 +1,1 @@
+enum ListMenu { edit, delete }

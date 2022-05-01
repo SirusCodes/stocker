@@ -50,11 +50,7 @@ class CategoryListSection extends StatelessWidget {
           final category = _categoryList[index];
           return CategoryListTile(
             category: category,
-            onTap: () => Navigator.pushNamed(
-              context,
-              SaveCategoryScreen.path,
-              arguments: category,
-            ),
+            onTap: () {},
           );
         },
       ),
@@ -92,11 +88,7 @@ class _CategorySearchDelegate extends SearchDelegate {
       itemCount: result.length,
       itemBuilder: (context, index) => CategoryListTile(
         category: result[index],
-        onTap: () => Navigator.pushNamed(
-          context,
-          SaveCategoryScreen.path,
-          arguments: result[index],
-        ),
+        onTap: () {},
       ),
     );
   }
@@ -110,11 +102,7 @@ class _CategorySearchDelegate extends SearchDelegate {
       itemCount: result.length,
       itemBuilder: (context, index) => CategoryListTile(
         category: result[index],
-        onTap: () => Navigator.pushNamed(
-          context,
-          SaveCategoryScreen.path,
-          arguments: result[index],
-        ),
+        onTap: () {},
       ),
     );
   }

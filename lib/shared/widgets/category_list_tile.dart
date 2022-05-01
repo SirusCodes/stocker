@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../enums/enums.dart';
 import '../../extensions/extensions.dart';
 import '../../features/category/domain/domain.dart';
+import '../../features/category/presentation/save_category_screen.dart';
 
 class CategoryListTile extends StatelessWidget {
   const CategoryListTile({
@@ -32,6 +34,24 @@ class CategoryListTile extends StatelessWidget {
       ),
       title: Text(category.name),
       subtitle: Text("${category.productCount} product"),
+      trailing: PopupMenuButton<ListMenu>(
+        tooltip: "Category menu",
+        onSelected: (value) {
+          if (value == ListMenu.edit) {
+            Navigator.pushNamed(
+              context,
+              SaveCategoryScreen.path,
+              arguments: category,
+            );
+          }
+        },
+        itemBuilder: (context) => const [
+          PopupMenuItem(
+            value: ListMenu.edit,
+            child: Text("Edit"),
+          ),
+        ],
+      ),
       onTap: onTap,
     );
   }

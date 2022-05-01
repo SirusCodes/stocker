@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stocker_appwrite/features/category/presentation/save_category_screen.dart';
 
 import '../../../enums/enums.dart';
 import '../../../extensions/extensions.dart';
@@ -21,6 +22,13 @@ class CategoryListSection extends StatelessWidget {
         SliverAppBar(
           title: const Text("Stocker"),
           actions: [
+            IconButton(
+              onPressed: () => Navigator.pushNamed(
+                context,
+                SaveCategoryScreen.path,
+              ),
+              icon: const Icon(Icons.add_rounded),
+            ),
             SortButton(
               selectedSort: Sort.ascAlpha,
               onSelected: (sort) {},
@@ -54,7 +62,11 @@ class CategoryListSection extends StatelessWidget {
             ),
             title: Text(category.name),
             subtitle: Text("${category.productCount} product"),
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(
+              context,
+              SaveCategoryScreen.path,
+              arguments: category,
+            ),
           );
         },
       ),

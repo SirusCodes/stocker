@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../features/category/domain/domain.dart';
+import '../features/category/presentation/save_category_screen.dart';
 import '../features/home/presentation/home_base.dart';
 import '../features/transaction/presentation/transaction_history_screen.dart';
 import '../features/users/presentation/profile_screen.dart';
@@ -21,6 +23,11 @@ class RouteGenerator {
       case UpdatePasswordScreen.path:
         return MaterialPageRoute(
           builder: (_) => const UpdatePasswordScreen(),
+        );
+      case SaveCategoryScreen.path:
+        final category = settings.arguments as CategoryModel?;
+        return MaterialPageRoute(
+          builder: (_) => SaveCategoryScreen(category: category),
         );
       default:
         return MaterialPageRoute(builder: (context) => const HomeBase());

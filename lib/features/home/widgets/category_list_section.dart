@@ -5,6 +5,7 @@ import '../../../shared/widgets/category_list_tile.dart';
 import '../../../shared/widgets/sort_button.dart';
 import '../../category/domain/domain.dart';
 import '../../category/presentation/save_category_screen.dart';
+import '../../product/presentation/product_base_screen.dart';
 
 const _categoryList = [
   CategoryModel(name: "Name zero", color: Colors.amber, productCount: 10),
@@ -50,7 +51,11 @@ class CategoryListSection extends StatelessWidget {
           final category = _categoryList[index];
           return CategoryListTile(
             category: category,
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(
+              context,
+              ProductBaseScreen.path,
+              arguments: category,
+            ),
           );
         },
       ),
@@ -88,7 +93,11 @@ class _CategorySearchDelegate extends SearchDelegate {
       itemCount: result.length,
       itemBuilder: (context, index) => CategoryListTile(
         category: result[index],
-        onTap: () {},
+        onTap: () => Navigator.pushNamed(
+          context,
+          ProductBaseScreen.path,
+          arguments: result[index],
+        ),
       ),
     );
   }
@@ -102,7 +111,11 @@ class _CategorySearchDelegate extends SearchDelegate {
       itemCount: result.length,
       itemBuilder: (context, index) => CategoryListTile(
         category: result[index],
-        onTap: () {},
+        onTap: () => Navigator.pushNamed(
+          context,
+          ProductBaseScreen.path,
+          arguments: result[index],
+        ),
       ),
     );
   }

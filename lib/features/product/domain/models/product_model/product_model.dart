@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../../utils/color_serializer.dart';
@@ -8,18 +8,21 @@ part 'product_model.g.dart';
 
 @JsonSerializable()
 class ProductModel extends Equatable {
-  final String name;
+  final String name, categoryId;
+  final String? id;
   final double costPrice, sellingPrice, quantity;
 
-  @ColorSerializer()
-  final Color color;
+  @NullableColorSerializer()
+  final Color? color;
 
   const ProductModel({
+    this.id,
+    this.color,
+    required this.categoryId,
     required this.name,
     required this.costPrice,
     required this.sellingPrice,
     required this.quantity,
-    required this.color,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
@@ -29,6 +32,8 @@ class ProductModel extends Equatable {
 
   @override
   List<Object?> get props => [
+        id,
+        categoryId,
         name,
         costPrice,
         sellingPrice,

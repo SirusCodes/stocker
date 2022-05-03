@@ -7,6 +7,7 @@ import '../../category/domain/domain.dart';
 import '../providers/category_provider.dart';
 import '../widgets/product_list_section.dart';
 import '../widgets/product_statistics_section.dart';
+import 'save_product_screen.dart';
 
 class ProductBaseScreen extends StatefulWidget {
   const ProductBaseScreen({Key? key, required this.category}) : super(key: key);
@@ -39,7 +40,10 @@ class _ProductBaseScreenState extends State<ProductBaseScreen> {
           actions: _selectedSection == 0
               ? [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      SaveProductScreen.path,
+                    ),
                     icon: const Icon(Icons.add_rounded),
                   ),
                   SortButton(

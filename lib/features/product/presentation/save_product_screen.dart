@@ -57,6 +57,15 @@ class _SaveProductScreenState extends State<SaveProductScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+    _costPriceController.dispose();
+    _sellingPriceController.dispose();
+    _quantityController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

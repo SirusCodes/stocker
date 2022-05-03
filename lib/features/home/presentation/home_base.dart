@@ -37,7 +37,7 @@ class _HomeBaseState extends State<HomeBase> {
         },
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.list),
+            icon: Icon(Icons.list_rounded),
             label: "Categories",
           ),
           NavigationDestination(

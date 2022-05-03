@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../enums/enums.dart';
+import '../../../shared/widgets/product_list_tile.dart';
 import '../../../shared/widgets/sort_button.dart';
 import '../../category/domain/domain.dart';
 import '../providers/category_provider.dart';
@@ -51,7 +52,10 @@ class _ProductBaseScreenState extends State<ProductBaseScreen> {
                     onSelected: (sort) {},
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => showSearch(
+                      context: context,
+                      delegate: _ProductSearchDelegate(),
+                    ),
                     icon: const Icon(Icons.search_rounded),
                   ),
                 ]
@@ -74,6 +78,54 @@ class _ProductBaseScreenState extends State<ProductBaseScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ProductSearchDelegate extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: query.isNotEmpty ? () => query = "" : null,
+        icon: const Icon(Icons.clear_rounded),
+      )
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+      onPressed: () => close(context, null),
+      icon: const Icon(Icons.arrow_back_rounded),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    if (query.isEmpty) return const SizedBox.shrink();
+
+    final result = mockProducts //
+        .where((prod) => prod.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return ListView.builder(
+      itemCount: result.length,
+      itemBuilder: (context, index) => ProductListTile(
+        product: result[index],
+      ),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final result = mockProducts //
+        .where((prod) => prod.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return ListView.builder(
+      itemCount: result.length,
+      itemBuilder: (context, index) => ProductListTile(
+        product: result[index],
       ),
     );
   }

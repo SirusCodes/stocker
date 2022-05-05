@@ -36,6 +36,8 @@ dependencies:
   intl: ^0.17.0
   fl_chart: ^0.50.1
   flex_color_picker: ^2.5.0
+  flutter_typeahead: ^3.2.5
+  badges: ^2.0.2
 
 dev_dependencies:
   flutter_test:

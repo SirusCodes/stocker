@@ -5,6 +5,7 @@ import '../../../enums/enums.dart';
 import '../../../shared/widgets/product_list_tile.dart';
 import '../../../shared/widgets/sort_button.dart';
 import '../../category/domain/domain.dart';
+import '../../transaction/widgets/cart_fab.dart';
 import '../providers/category_provider.dart';
 import '../widgets/product_list_section.dart';
 import '../widgets/product_statistics_section.dart';
@@ -78,6 +79,7 @@ class _ProductBaseScreenState extends State<ProductBaseScreen> {
             ),
           ],
         ),
+        floatingActionButton: const CartFAB(),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../transaction/widgets/cart_fab.dart';
 import '../widgets/category_list_section.dart';
 import '../widgets/more_section.dart';
 import '../widgets/search_section.dart';
@@ -54,6 +55,7 @@ class _HomeBaseState extends State<HomeBase> {
           ),
         ],
       ),
+      floatingActionButton: const CartFAB(),
     );
   }
 }

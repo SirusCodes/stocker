@@ -6,6 +6,7 @@ import '../features/home/presentation/home_base.dart';
 import '../features/product/presentation/product_base_screen.dart';
 import '../features/product/presentation/save_product_screen.dart';
 import '../features/share_store/presentation/create_join_store.dart';
+import '../features/share_store/presentation/store_manager_screen.dart';
 import '../features/transaction/presentation/add_transaction_screen.dart';
 import '../features/transaction/presentation/transaction_history_screen.dart';
 import '../features/users/presentation/profile_screen.dart';
@@ -50,6 +51,10 @@ class RouteGenerator {
       case CreateJoinStore.path:
         return MaterialPageRoute(
           builder: (_) => const CreateJoinStore(),
+        );
+      case StoreManagerScreen.path:
+        return MaterialPageRoute(
+          builder: (_) => const StoreManagerScreen(),
         );
       default:
         return MaterialPageRoute(builder: (context) => const HomeBase());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/providers/theme_provider.dart';
+import '../../share_store/presentation/store_manager_screen.dart';
 import '../../transaction/presentation/transaction_history_screen.dart';
 import '../../users/presentation/profile_screen.dart';
 
@@ -19,10 +20,10 @@ class MoreSection extends StatelessWidget {
           onTap: () => Navigator.pushNamed(context, ProfileScreen.path),
         ),
         ListTile(
-          leading: const CircleAvatar(child: Icon(Icons.share_rounded)),
-          title: const Text("Share/Revoke shop access"),
-          subtitle: const Text("Add or remove access to your shop"),
-          onTap: () {},
+          leading: const CircleAvatar(child: Icon(Icons.people_rounded)),
+          title: const Text("Store manager"),
+          subtitle: const Text("Add or remove access to your store"),
+          onTap: () => Navigator.pushNamed(context, StoreManagerScreen.path),
         ),
         ListTile(
           leading: const CircleAvatar(child: Icon(Icons.access_time_rounded)),

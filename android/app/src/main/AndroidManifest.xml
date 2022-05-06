@@ -1,9 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.darshan.stocker_appwrite">
+    package="com.darshan.stocker">
    <application
-        android:label="stocker_appwrite"
+        android:label="Stocker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+         <activity android:name="com.linusu.flutter_web_auth.CallbackActivity" android:exported="true">
+            <intent-filter android:label="flutter_web_auth">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="appwrite-callback-62756619be92278a1ff0" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"

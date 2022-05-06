@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 enum _ActionType { create, join }
 
@@ -16,7 +16,6 @@ class _CreateJoinStoreState extends State<CreateJoinStore> {
   _ActionType _actionType = _ActionType.create;
 
   final _nameController = TextEditingController();
-  final _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class _CreateJoinStoreState extends State<CreateJoinStore> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Spacer(),
+          const SizedBox(height: 80),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: _SelectorButton(
@@ -47,16 +46,6 @@ class _CreateJoinStoreState extends State<CreateJoinStore> {
               duration: const Duration(milliseconds: 300),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 25, left: 10, right: 10),
-            child: AnimatedBuilder(
-              animation: Listenable.merge([_nameController, _codeController]),
-              builder: (context, child) => ElevatedButton(
-                onPressed: _canContinue ? () {} : null,
-                child: const Text("Continue"),
-              ),
-            ),
-          ),
           const Spacer(flex: 5),
         ],
       ),
@@ -64,53 +53,41 @@ class _CreateJoinStoreState extends State<CreateJoinStore> {
   }
 
   bool get _canContinue =>
-      (_actionType == _ActionType.create && _nameController.text.isNotEmpty) ||
-      (_actionType == _ActionType.join && _codeController.text.length == 6);
+      (_actionType == _ActionType.create && _nameController.text.isNotEmpty);
 
   Widget _buildCreateStore() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          "Store Name",
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         TextField(
           controller: _nameController,
-          decoration: const InputDecoration(hintText: "ABC XYZ"),
+          decoration: const InputDecoration(
+            hintText: "ABC XYZ",
+            labelText: "Store name",
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 25, left: 10, right: 10),
+          child: ValueListenableBuilder(
+            valueListenable: _nameController,
+            builder: (context, value, child) => ElevatedButton(
+              onPressed: _canContinue ? () {} : null,
+              child: const Text("Continue"),
+            ),
+          ),
         ),
       ],
     );
   }
 
   Widget _buildJoinStore() {
-    final _theme = Theme.of(context);
-    final _colorScheme = _theme.colorScheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          "Store code",
-          style: _theme.textTheme.bodyLarge,
-        ),
-        PinCodeTextField(
-          pinTheme: PinTheme(
-            inactiveColor: _colorScheme.secondary.withOpacity(.2),
-            selectedColor: _colorScheme.primary,
-            activeColor: _colorScheme.secondary,
-          ),
-          textStyle: _theme.textTheme.bodyLarge,
-          cursorColor: _colorScheme.secondary,
-          animationType: AnimationType.fade,
-          appContext: context,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          controller: _codeController,
-          onChanged: (value) {},
-          length: 6,
-          keyboardType: TextInputType.text,
-        ),
-      ],
+    return Center(
+      child: QrImage(
+        data: "darshan@gmail.com",
+        size: 200,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
+      ),
     );
   }
 }

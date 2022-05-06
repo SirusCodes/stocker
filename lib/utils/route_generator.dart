@@ -16,7 +16,7 @@ class RouteGenerator {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "/":
-        return MaterialPageRoute(builder: (_) => const HomeBase());
+        return MaterialPageRoute(builder: (_) => const CreateJoinStore());
       case TransactionHistoryScreen.path:
         return MaterialPageRoute(
           builder: (_) => const TransactionHistoryScreen(),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../features/authentication/presentation/auth_screen.dart';
 import '../features/category/domain/domain.dart';
 import '../features/category/presentation/save_category_screen.dart';
 import '../features/home/presentation/home_base.dart';
 import '../features/product/presentation/product_base_screen.dart';
 import '../features/product/presentation/save_product_screen.dart';
+import '../features/share_store/presentation/create_join_store.dart';
 import '../features/transaction/presentation/add_transaction_screen.dart';
 import '../features/transaction/presentation/transaction_history_screen.dart';
 import '../features/users/presentation/profile_screen.dart';
@@ -15,7 +15,7 @@ class RouteGenerator {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "/":
-        return MaterialPageRoute(builder: (_) => const AuthScreen());
+        return MaterialPageRoute(builder: (_) => const HomeBase());
       case TransactionHistoryScreen.path:
         return MaterialPageRoute(
           builder: (_) => const TransactionHistoryScreen(),
@@ -46,6 +46,10 @@ class RouteGenerator {
       case AddTransactionScreen.path:
         return MaterialPageRoute(
           builder: (_) => const AddTransactionScreen(),
+        );
+      case CreateJoinStore.path:
+        return MaterialPageRoute(
+          builder: (_) => const CreateJoinStore(),
         );
       default:
         return MaterialPageRoute(builder: (context) => const HomeBase());

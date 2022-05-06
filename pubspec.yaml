@@ -38,6 +38,7 @@ dependencies:
   flex_color_picker: ^2.5.0
   flutter_typeahead: ^3.2.5
   badges: ^2.0.2
+  pin_code_fields: ^7.4.0
 
 dev_dependencies:
   flutter_test:

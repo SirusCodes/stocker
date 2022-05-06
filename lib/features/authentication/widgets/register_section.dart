@@ -1,23 +1,25 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/widgets/password_form_field.dart';
 import '../../../utils/validators.dart';
+import '../providers/auth_provider.dart';
 
 class RegisterSection extends StatefulWidget {
   const RegisterSection({
     Key? key,
-    required this.onRegisterPressed,
     required this.onChangeLoginPressed,
   }) : super(key: key);
 
-  final VoidCallback onRegisterPressed, onChangeLoginPressed;
+  final VoidCallback onChangeLoginPressed;
 
   @override
   State<RegisterSection> createState() => _RegisterSectionState();
 }
 
 class _RegisterSectionState extends State<RegisterSection> {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _rePasswordController = TextEditingController();
@@ -27,6 +29,7 @@ class _RegisterSectionState extends State<RegisterSection> {
   @override
   void dispose() {
     super.dispose();
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _rePasswordController.dispose();
@@ -46,6 +49,20 @@ class _RegisterSectionState extends State<RegisterSection> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 50),
+          TextFormField(
+            controller: _nameController,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) {
+              if (value == null || value.isEmpty) return "Enter name";
+
+              return null;
+            },
+            decoration: const InputDecoration(
+              labelText: "Name",
+              hintText: "John",
+            ),
+          ),
+          const SizedBox(height: 8),
           TextFormField(
             controller: _emailController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -90,13 +107,19 @@ class _RegisterSectionState extends State<RegisterSection> {
             labelText: "Re-enter Password",
           ),
           const SizedBox(height: 50),
-          ElevatedButton(
-            onPressed: () {
-              if (!_formKey.currentState!.validate()) return;
+          Consumer(
+            builder: (context, ref, child) => ElevatedButton(
+              onPressed: () {
+                if (!_formKey.currentState!.validate()) return;
 
-              widget.onRegisterPressed();
-            },
-            child: const Text("Register"),
+                ref.read(authProvider.notifier).register(
+                      name: _nameController.text,
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+              },
+              child: const Text("Register"),
+            ),
           ),
           const SizedBox(height: 12),
           RichText(

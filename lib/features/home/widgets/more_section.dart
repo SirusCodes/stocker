@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/providers/theme_provider.dart';
+import '../../authentication/providers/auth_provider.dart';
 import '../../share_store/presentation/store_manager_screen.dart';
 import '../../transaction/presentation/transaction_history_screen.dart';
 import '../../users/presentation/profile_screen.dart';
@@ -58,11 +59,15 @@ class MoreSection extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        ListTile(
-          leading: const CircleAvatar(child: Icon(Icons.logout_rounded)),
-          title: const Text("Log out"),
-          subtitle: const Text("Log out current user"),
-          onTap: () {},
+        Consumer(
+          builder: (context, ref, child) => ListTile(
+            leading: const CircleAvatar(child: Icon(Icons.logout_rounded)),
+            title: const Text("Log out"),
+            subtitle: const Text("Log out current user"),
+            onTap: () {
+              ref.read(authProvider.notifier).logout();
+            },
+          ),
         ),
       ],
     );

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../enums/enums.dart';
+import '../features/authentication/presentation/auth_screen.dart';
+import '../features/authentication/providers/auth_provider.dart';
 import '../features/category/domain/domain.dart';
 import '../features/category/presentation/save_category_screen.dart';
 import '../features/home/presentation/home_base.dart';
@@ -17,7 +21,9 @@ class RouteGenerator {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "/":
-        return MaterialPageRoute(builder: (_) => const HomeBase());
+        return MaterialPageRoute(
+          builder: (_) => _buildAuthLogin(),
+        );
       case TransactionHistoryScreen.path:
         return MaterialPageRoute(
           builder: (_) => const TransactionHistoryScreen(),
@@ -64,5 +70,22 @@ class RouteGenerator {
       default:
         return MaterialPageRoute(builder: (context) => const HomeBase());
     }
+  }
+
+  static Widget _buildAuthLogin() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final _authState = ref.watch(authProvider);
+        if (_authState == AuthState.authenticated) {
+          return const HomeBase();
+        } else if (_authState == AuthState.unauthenticated) {
+          return const AuthScreen();
+        }
+
+        return const Material(
+          child: Center(child: CircularProgressIndicator()),
+        );
+      },
+    );
   }
 }

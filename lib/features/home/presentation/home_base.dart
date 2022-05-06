@@ -9,6 +9,8 @@ import '../widgets/statistics_section.dart';
 class HomeBase extends StatefulWidget {
   const HomeBase({Key? key}) : super(key: key);
 
+  static const path = "/home";
+
   @override
   State<HomeBase> createState() => _HomeBaseState();
 }

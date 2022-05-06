@@ -41,6 +41,7 @@ dependencies:
   pin_code_fields: ^7.4.0
   mobile_scanner: ^1.0.0
   qr_flutter: ^4.0.0
+  appwrite: ^4.0.2
 
 dev_dependencies:
   flutter_test:

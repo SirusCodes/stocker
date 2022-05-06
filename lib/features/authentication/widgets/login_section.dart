@@ -1,17 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/widgets/password_form_field.dart';
 import '../../../utils/validators.dart';
+import '../providers/auth_provider.dart';
 
 class LoginSection extends StatefulWidget {
   const LoginSection({
     Key? key,
-    required this.onLoginPressed,
     required this.onChangeRegisterPressed,
   }) : super(key: key);
 
-  final VoidCallback onLoginPressed, onChangeRegisterPressed;
+  final VoidCallback onChangeRegisterPressed;
 
   @override
   State<LoginSection> createState() => _LoginSectionState();
@@ -73,13 +74,18 @@ class _LoginSectionState extends State<LoginSection> {
             labelText: "Password",
           ),
           const SizedBox(height: 50),
-          ElevatedButton(
-            onPressed: () {
-              if (!_formKey.currentState!.validate()) return;
+          Consumer(
+            builder: (context, ref, child) => ElevatedButton(
+              onPressed: () {
+                if (!_formKey.currentState!.validate()) return;
 
-              widget.onLoginPressed();
-            },
-            child: const Text("Login"),
+                ref.read(authProvider.notifier).login(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    );
+              },
+              child: const Text("Login"),
+            ),
           ),
           const SizedBox(height: 12),
           RichText(

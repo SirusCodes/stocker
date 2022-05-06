@@ -8,6 +8,8 @@ enum _AuthType { login, register }
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
+  static const path = "/auth";
+
   @override
   State<AuthScreen> createState() => _AuthScreenState();
 }
@@ -22,13 +24,11 @@ class _AuthScreenState extends State<AuthScreen> {
         padding: const EdgeInsets.all(8.0),
         child: AnimatedCrossFade(
           firstChild: LoginSection(
-            onLoginPressed: () {},
             onChangeRegisterPressed: () => setState(() {
               _authType = _AuthType.register;
             }),
           ),
           secondChild: RegisterSection(
-            onRegisterPressed: () {},
             onChangeLoginPressed: () => setState(() {
               _authType = _AuthType.login;
             }),

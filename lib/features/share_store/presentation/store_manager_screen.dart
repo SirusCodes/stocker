@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../extensions/extensions.dart';
+import 'scan_code_screen.dart';
 
 class StoreManagerScreen extends StatelessWidget {
   const StoreManagerScreen({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class StoreManagerScreen extends StatelessWidget {
         title: const Text("Store manager"),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, ScanCodeScreen.path),
             icon: const Icon(Icons.add_rounded),
           ),
         ],

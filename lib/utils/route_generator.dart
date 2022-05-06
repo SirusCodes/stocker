@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../features/authentication/presentation/auth_screen.dart';
 import '../features/category/domain/domain.dart';
 import '../features/category/presentation/save_category_screen.dart';
 import '../features/home/presentation/home_base.dart';
@@ -14,7 +15,7 @@ class RouteGenerator {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "/":
-        return MaterialPageRoute(builder: (_) => const HomeBase());
+        return MaterialPageRoute(builder: (_) => const AuthScreen());
       case TransactionHistoryScreen.path:
         return MaterialPageRoute(
           builder: (_) => const TransactionHistoryScreen(),

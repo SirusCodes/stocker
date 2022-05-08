@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/providers/theme_provider.dart';
 import '../../authentication/providers/auth_provider.dart';
-import '../../share_store/presentation/store_manager_screen.dart';
+import '../../store/presentation/store_manager_screen.dart';
 import '../../transaction/presentation/transaction_history_screen.dart';
 import '../../users/presentation/profile_screen.dart';
 

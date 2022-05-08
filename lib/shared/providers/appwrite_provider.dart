@@ -11,3 +11,7 @@ final _appwriteProvider = Provider<Client>((ref) {
 final accountsProvider = Provider<Account>((ref) {
   return Account(ref.read(_appwriteProvider));
 });
+
+final teamsProvider = Provider<Teams>((ref) {
+  return Teams(ref.read(_appwriteProvider));
+});

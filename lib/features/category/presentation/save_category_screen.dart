@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/domain.dart';
+import '../providers/category_provider.dart';
 
-class SaveCategoryScreen extends StatefulWidget {
+class SaveCategoryScreen extends ConsumerStatefulWidget {
   const SaveCategoryScreen({Key? key, this.category}) : super(key: key);
 
   final CategoryModel? category;
@@ -13,10 +15,10 @@ class SaveCategoryScreen extends StatefulWidget {
   static const path = "/save-category";
 
   @override
-  State<SaveCategoryScreen> createState() => _SaveCategoryScreenState();
+  ConsumerState<SaveCategoryScreen> createState() => _SaveCategoryScreenState();
 }
 
-class _SaveCategoryScreenState extends State<SaveCategoryScreen> {
+class _SaveCategoryScreenState extends ConsumerState<SaveCategoryScreen> {
   late final TextEditingController _nameController;
   late Color _categoryColor;
 
@@ -68,7 +70,7 @@ class _SaveCategoryScreenState extends State<SaveCategoryScreen> {
               child: ValueListenableBuilder<TextEditingValue>(
                 valueListenable: _nameController,
                 builder: (context, value, child) => ElevatedButton.icon(
-                  onPressed: _canSave(value.text) ? () {} : null,
+                  onPressed: _canSave(value.text) ? _save : null,
                   icon: const Icon(Icons.check),
                   label: const Text("Save"),
                 ),
@@ -78,6 +80,23 @@ class _SaveCategoryScreenState extends State<SaveCategoryScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _save() async {
+    final provider = ref.read(categoryProvider.notifier);
+    final category = CategoryModel(
+      id: widget.category?.id,
+      name: _nameController.text,
+      color: _categoryColor,
+      productCount: widget.category?.productCount ?? 0,
+    );
+    if (widget.category == null) {
+      provider.createCategory(category);
+    } else {
+      provider.updateCategory(category);
+    }
+
+    Navigator.pop(context);
   }
 
   bool _canSave(String value) =>

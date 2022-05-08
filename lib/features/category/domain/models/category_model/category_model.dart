@@ -9,6 +9,8 @@ part 'category_model.g.dart';
 @JsonSerializable()
 class CategoryModel extends Equatable {
   final String name;
+
+  @JsonKey(ignore: true)
   final String? id;
   final int productCount;
 
@@ -29,4 +31,18 @@ class CategoryModel extends Equatable {
 
   @override
   List<Object?> get props => [id, name, productCount, color];
+
+  CategoryModel copyWith({
+    String? name,
+    String? id,
+    int? productCount,
+    Color? color,
+  }) {
+    return CategoryModel(
+      name: name ?? this.name,
+      id: id ?? this.id,
+      productCount: productCount ?? this.productCount,
+      color: color ?? this.color,
+    );
+  }
 }

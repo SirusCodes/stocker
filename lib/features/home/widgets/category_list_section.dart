@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../enums/enums.dart';
 import '../../../shared/widgets/category_list_tile.dart';
 import '../../../shared/widgets/sort_button.dart';
 import '../../category/domain/domain.dart';
 import '../../category/presentation/save_category_screen.dart';
+import '../../category/providers/category_provider.dart';
 import '../../product/presentation/product_base_screen.dart';
 
 const _categoryList = [
@@ -13,12 +15,44 @@ const _categoryList = [
   CategoryModel(name: "Name two", color: Colors.blue, productCount: 55),
 ];
 
-class CategoryListSection extends StatelessWidget {
+class CategoryListSection extends ConsumerStatefulWidget {
   const CategoryListSection({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<CategoryListSection> createState() =>
+      _CategoryListSectionState();
+}
+
+class _CategoryListSectionState extends ConsumerState<CategoryListSection> {
+  final _scrollController = ScrollController();
+
+  late final CategoryProvider _categoryProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _categoryProvider = ref.read(categoryProvider.notifier);
+    _scrollController.addListener(_loadMore);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController
+      ..removeListener(_loadMore)
+      ..dispose();
+  }
+
+  void _loadMore() {
+    if (_scrollController.position.extentAfter < 50) {
+      _categoryProvider.getMoreCategories();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
+      controller: _scrollController,
       headerSliverBuilder: (context, innerBoxIsScrolled) => [
         SliverAppBar(
           title: const Text("Stocker"),
@@ -45,20 +79,30 @@ class CategoryListSection extends StatelessWidget {
           ],
         ),
       ],
-      body: ListView.builder(
-        itemCount: _categoryList.length,
-        itemBuilder: (context, index) {
-          final category = _categoryList[index];
-          return CategoryListTile(
-            category: category,
-            onTap: () => Navigator.pushNamed(
-              context,
-              ProductBaseScreen.path,
-              arguments: category,
+      body: ref.watch(categoryProvider).when(
+            data: (categories) {
+              return ListView.builder(
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final category = categories[index];
+                  return CategoryListTile(
+                    category: category,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      ProductBaseScreen.path,
+                      arguments: category,
+                    ),
+                  );
+                },
+              );
+            },
+            error: (_, __) => const Center(
+              child: Text("Something went wrong"),
             ),
-          );
-        },
-      ),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
     );
   }
 }

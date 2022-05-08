@@ -8,7 +8,6 @@ part of 'category_model.dart';
 
 CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
     CategoryModel(
-      id: json['id'] as String?,
       name: json['name'] as String,
       color: const ColorSerializer().fromJson(json['color'] as int),
       productCount: json['productCount'] as int,
@@ -17,7 +16,6 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'id': instance.id,
       'productCount': instance.productCount,
       'color': const ColorSerializer().toJson(instance.color),
     };

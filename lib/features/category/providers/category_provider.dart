@@ -1,17 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../enums/enums.dart';
 import '../domain/domain.dart';
 import '../domain/services/category_service.dart';
+
+final categorySortProvider = StateProvider<Sort>((ref) {
+  return Sort.ascAlpha;
+});
 
 final categoryProvider =
     StateNotifierProvider<CategoryProvider, AsyncValue<List<CategoryModel>>>(
         (ref) {
-  return CategoryProvider(ref.read);
+  final sort = ref.watch(categorySortProvider);
+  return CategoryProvider(ref.read, sort);
 });
 
 class CategoryProvider extends StateNotifier<AsyncValue<List<CategoryModel>>> {
-  CategoryProvider(Reader read)
+  CategoryProvider(Reader read, Sort sort)
       : _service = read(categoryService),
+        _sort = sort,
         super(const AsyncLoading()) {
     _getInitialCategories();
   }
@@ -20,8 +27,11 @@ class CategoryProvider extends StateNotifier<AsyncValue<List<CategoryModel>>> {
 
   bool _gettingMoreData = false;
 
+  final Sort _sort;
+
   Future<void> _getInitialCategories() async {
-    state = AsyncData(await _service.getAllCategories());
+    state =
+        AsyncData(await _service.getAllCategories(order: _sort.getString()));
   }
 
   Future<void> createCategory(CategoryModel category) async {
@@ -48,7 +58,10 @@ class CategoryProvider extends StateNotifier<AsyncValue<List<CategoryModel>>> {
 
     _gettingMoreData = true;
     final oldData = state.value;
-    final newCats = await _service.getAllCategories(oldData!.last.id);
+    final newCats = await _service.getAllCategories(
+      cursor: oldData!.last.id,
+      order: _sort.getString(),
+    );
 
     oldData.addAll(newCats);
 

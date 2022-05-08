@@ -25,11 +25,16 @@ class CategoryService {
     return CategoryModel.fromJson(doc.data).copyWith(id: doc.$id);
   }
 
-  Future<List<CategoryModel>> getAllCategories([String? cursor]) async {
+  Future<List<CategoryModel>> getAllCategories({
+    String? cursor,
+    String order = "ASC",
+  }) async {
     final docs = await _db.listDocuments(
       collectionId: _categoryId,
       limit: 10,
       cursor: cursor,
+      orderAttributes: ["name"],
+      orderTypes: [order],
     );
 
     return docs.documents

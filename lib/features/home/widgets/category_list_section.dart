@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../enums/enums.dart';
 import '../../../shared/widgets/category_list_tile.dart';
 import '../../../shared/widgets/sort_button.dart';
 import '../../category/domain/domain.dart';
@@ -26,12 +25,9 @@ class CategoryListSection extends ConsumerStatefulWidget {
 class _CategoryListSectionState extends ConsumerState<CategoryListSection> {
   final _scrollController = ScrollController();
 
-  late final CategoryProvider _categoryProvider;
-
   @override
   void initState() {
     super.initState();
-    _categoryProvider = ref.read(categoryProvider.notifier);
     _scrollController.addListener(_loadMore);
   }
 
@@ -45,12 +41,13 @@ class _CategoryListSectionState extends ConsumerState<CategoryListSection> {
 
   void _loadMore() {
     if (_scrollController.position.extentAfter < 50) {
-      _categoryProvider.getMoreCategories();
+      ref.read(categoryProvider.notifier).getMoreCategories();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final sort = ref.watch(categorySortProvider);
     return NestedScrollView(
       controller: _scrollController,
       headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -65,8 +62,9 @@ class _CategoryListSectionState extends ConsumerState<CategoryListSection> {
               icon: const Icon(Icons.add_rounded),
             ),
             SortButton(
-              selectedSort: Sort.ascAlpha,
-              onSelected: (sort) {},
+              selectedSort: sort,
+              onSelected: (sort) =>
+                  ref.read(categorySortProvider.notifier).state = sort,
             ),
             IconButton(
               onPressed: () => showSearch(

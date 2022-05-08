@@ -51,4 +51,16 @@ class CategoryService {
 
     return category;
   }
+
+  Future<List<CategoryModel>> searchCategory(String query) async {
+    final docs = await _db.listDocuments(
+      collectionId: _categoryId,
+      limit: 8,
+      queries: [Query.search("name", query)],
+    );
+
+    return docs.documents
+        .map((e) => CategoryModel.fromJson(e.data).copyWith(id: e.$id))
+        .toList();
+  }
 }

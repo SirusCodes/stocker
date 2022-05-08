@@ -59,4 +59,34 @@ class ProductService {
         .map((e) => ProductModel.fromJson(e.data).copyWith(id: e.$id))
         .toList();
   }
+
+  Future<List<ProductModel>> productSearch({
+    required String categoryId,
+    required String query,
+  }) async {
+    final docs = await _db.listDocuments(
+      collectionId: collectionId,
+      limit: 8,
+      queries: [
+        Query.equal("categoryId", categoryId),
+        Query.search("name", query),
+      ],
+    );
+
+    return docs.documents
+        .map((e) => ProductModel.fromJson(e.data).copyWith(id: e.$id))
+        .toList();
+  }
+
+  Future<List<ProductModel>> overallSearch(String query) async {
+    final docs = await _db.listDocuments(
+      collectionId: collectionId,
+      limit: 8,
+      queries: [Query.search("name", query)],
+    );
+
+    return docs.documents
+        .map((e) => ProductModel.fromJson(e.data).copyWith(id: e.$id))
+        .toList();
+  }
 }

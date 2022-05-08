@@ -1,29 +1,33 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/domain.dart';
+import '../providers/product_provider.dart';
 
 class SaveProductScreenArguments extends Equatable {
   final ProductModel? product;
   final String categoryId;
+  final Color categoryColor;
 
   const SaveProductScreenArguments({
     this.product,
     required this.categoryId,
+    required this.categoryColor,
   });
 
   @override
-  List<Object?> get props => [product, categoryId];
+  List<Object?> get props => [product, categoryId, categoryColor];
 }
 
 class SaveProductScreen extends StatefulWidget {
   const SaveProductScreen({
     Key? key,
-    this.arguments,
+    required this.arguments,
   }) : super(key: key);
 
-  final SaveProductScreenArguments? arguments;
+  final SaveProductScreenArguments arguments;
 
   static const path = "/save-product";
 
@@ -42,7 +46,7 @@ class _SaveProductScreenState extends State<SaveProductScreen> {
   @override
   void initState() {
     super.initState();
-    _product = widget.arguments?.product;
+    _product = widget.arguments.product;
 
     _nameController = TextEditingController(text: _product?.name);
     _costPriceController = TextEditingController(
@@ -128,10 +132,12 @@ class _SaveProductScreenState extends State<SaveProductScreen> {
                   _quantityController,
                   _sellingPriceController,
                 ]),
-                builder: (context, child) => ElevatedButton.icon(
-                  onPressed: _canSave ? () {} : null,
-                  icon: const Icon(Icons.check),
-                  label: const Text("Save"),
+                builder: (context, child) => Consumer(
+                  builder: (context, ref, child) => ElevatedButton.icon(
+                    onPressed: _canSave ? () => _save(ref.read) : null,
+                    icon: const Icon(Icons.check),
+                    label: const Text("Save"),
+                  ),
                 ),
               ),
             ),
@@ -139,6 +145,33 @@ class _SaveProductScreenState extends State<SaveProductScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _save(Reader read) async {
+    final _productProvider =
+        read(productProvider(widget.arguments.categoryId).notifier);
+    final _name = _nameController.text;
+    final _quantity = double.parse(_quantityController.text);
+    final _costPrice = double.parse(_costPriceController.text);
+    final _sellPrice = double.parse(_sellingPriceController.text);
+
+    final product = ProductModel(
+      id: _product?.id,
+      color: widget.arguments.categoryColor,
+      categoryId: widget.arguments.categoryId,
+      name: _name,
+      costPrice: _costPrice,
+      sellingPrice: _sellPrice,
+      quantity: _quantity,
+    );
+
+    if (_product == null) {
+      _productProvider.createProduct(product);
+    } else {
+      _productProvider.updateProduct(product);
+    }
+
+    Navigator.pop(context);
   }
 
   bool get _canSave {

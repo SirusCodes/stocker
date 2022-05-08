@@ -47,7 +47,7 @@ class RouteGenerator {
           builder: (_) => ProductBaseScreen(category: category),
         );
       case SaveProductScreen.path:
-        final args = settings.arguments as SaveProductScreenArguments?;
+        final args = settings.arguments as SaveProductScreenArguments;
         return MaterialPageRoute(
           builder: (_) => SaveProductScreen(arguments: args),
         );

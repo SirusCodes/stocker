@@ -10,10 +10,8 @@ final categorySortProvider = StateProvider<Sort>((ref) {
 
 final categoryProvider =
     StateNotifierProvider<CategoryProvider, AsyncValue<List<CategoryModel>>>(
-        (ref) {
-  final sort = ref.watch(categorySortProvider);
-  return CategoryProvider(ref.read, sort);
-});
+  (ref) => CategoryProvider(ref.read, ref.watch(categorySortProvider)),
+);
 
 class CategoryProvider extends StateNotifier<AsyncValue<List<CategoryModel>>> {
   CategoryProvider(Reader read, Sort sort)

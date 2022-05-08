@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../enums/enums.dart';
 import '../../../shared/widgets/product_list_tile.dart';
 import '../../../shared/widgets/sort_button.dart';
 import '../../category/domain/domain.dart';
 import '../../transaction/widgets/cart_fab.dart';
-import '../providers/category_provider.dart';
+import '../providers/product_category_provider.dart';
+import '../providers/product_provider.dart';
 import '../widgets/product_list_section.dart';
 import '../widgets/product_statistics_section.dart';
 import 'save_product_screen.dart';
@@ -34,7 +34,7 @@ class _ProductBaseScreenState extends State<ProductBaseScreen> {
   Widget build(BuildContext context) {
     return ProviderScope(
       overrides: [
-        categoryProductProvider.overrideWithValue(widget.category),
+        productCategoryProvider.overrideWithValue(widget.category),
       ],
       child: Scaffold(
         appBar: AppBar(
@@ -45,12 +45,20 @@ class _ProductBaseScreenState extends State<ProductBaseScreen> {
                     onPressed: () => Navigator.pushNamed(
                       context,
                       SaveProductScreen.path,
+                      arguments: SaveProductScreenArguments(
+                        categoryId: widget.category.id!,
+                        categoryColor: widget.category.color,
+                      ),
                     ),
                     icon: const Icon(Icons.add_rounded),
                   ),
-                  SortButton(
-                    selectedSort: Sort.ascAlpha,
-                    onSelected: (sort) {},
+                  Consumer(
+                    builder: (_, ref, __) => SortButton(
+                      selectedSort: ref.watch(productSortProvider),
+                      onSelected: (sort) {
+                        ref.read(productSortProvider.notifier).state = sort;
+                      },
+                    ),
                   ),
                   IconButton(
                     onPressed: () => showSearch(

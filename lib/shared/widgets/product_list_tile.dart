@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../enums/enums.dart';
 import '../../extensions/extensions.dart';
 import '../../features/product/domain/domain.dart';
 import '../../features/product/presentation/save_product_screen.dart';
+import '../../features/product/providers/product_provider.dart';
 import '../../features/transaction/widgets/show_cart_options_dialog.dart';
 
 const mockProducts = [
@@ -36,13 +38,13 @@ const mockProducts = [
   ),
 ];
 
-class ProductListTile extends StatelessWidget {
+class ProductListTile extends ConsumerWidget {
   const ProductListTile({Key? key, required this.product}) : super(key: key);
 
   final ProductModel product;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: product.color,
@@ -52,14 +54,16 @@ class ProductListTile extends StatelessWidget {
             child: Text(
               product.name.avatarString,
               style: TextStyle(
-                color: product.color!.blackOrWhiteForForeground,
+                color: product.color.blackOrWhiteForForeground,
               ),
             ),
           ),
         ),
       ),
       title: Text(product.name),
-      subtitle: Text("Quantity: ${product.quantity}"),
+      subtitle: Text(
+        "Quantity: ${product.quantity}\nPrice: ${product.sellingPrice}",
+      ),
       trailing: PopupMenuButton<ListMenu>(
         tooltip: "Category menu",
         onSelected: (value) {
@@ -70,12 +74,15 @@ class ProductListTile extends StatelessWidget {
                 SaveProductScreen.path,
                 arguments: SaveProductScreenArguments(
                   categoryId: product.categoryId,
+                  categoryColor: product.color,
                   product: product,
                 ),
               );
               break;
             case ListMenu.delete:
-              // TODO: Handle delete case
+              ref
+                  .read(productProvider(product.categoryId).notifier)
+                  .deleteProduct(product);
               break;
           }
         },

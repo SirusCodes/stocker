@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/domain.dart';
 import '../domain/services/product_service.dart';
 
-final prodcutSearchProvider = StateNotifierProvider.family<
+final productSearchProvider = StateNotifierProvider.family<
     ProductSearchProvider, List<ProductModel>, String>(
   (ref, categoryId) => ProductSearchProvider(ref.read, categoryId),
 );

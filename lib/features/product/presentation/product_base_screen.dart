@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../shared/widgets/custom_search.dart';
 import '../../../shared/widgets/product_list_tile.dart';
 import '../../../shared/widgets/sort_button.dart';
 import '../../category/domain/domain.dart';
 import '../../transaction/widgets/cart_fab.dart';
 import '../providers/product_category_provider.dart';
 import '../providers/product_provider.dart';
+import '../providers/product_search_provider.dart';
 import '../widgets/product_list_section.dart';
 import '../widgets/product_statistics_section.dart';
 import 'save_product_screen.dart';
@@ -61,9 +63,9 @@ class _ProductBaseScreenState extends State<ProductBaseScreen> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () => showSearch(
+                    onPressed: () => showCustomSearch(
                       context: context,
-                      delegate: _ProductSearchDelegate(),
+                      delegate: _ProductSearchDelegate(widget.category.id!),
                     ),
                     icon: const Icon(Icons.search_rounded),
                   ),
@@ -93,7 +95,10 @@ class _ProductBaseScreenState extends State<ProductBaseScreen> {
   }
 }
 
-class _ProductSearchDelegate extends SearchDelegate {
+class _ProductSearchDelegate extends CustomSearchDelegate {
+  _ProductSearchDelegate(this.categoryId);
+  final String categoryId;
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -114,29 +119,32 @@ class _ProductSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    if (query.isEmpty) return const SizedBox.shrink();
+    if (query.isEmpty || ref == null) return const SizedBox.shrink();
 
-    final result = mockProducts //
-        .where((prod) => prod.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+    final products = ref!.watch(productSearchProvider(categoryId));
     return ListView.builder(
-      itemCount: result.length,
+      itemCount: products.length,
       itemBuilder: (context, index) => ProductListTile(
-        product: result[index],
+        product: products[index],
       ),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final result = mockProducts //
-        .where((prod) => prod.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+    if (query.isEmpty || ref == null) return const SizedBox.shrink();
+
+    final products = ref!.watch(productSearchProvider(categoryId));
     return ListView.builder(
-      itemCount: result.length,
+      itemCount: products.length,
       itemBuilder: (context, index) => ProductListTile(
-        product: result[index],
+        product: products[index],
       ),
     );
+  }
+
+  @override
+  void search(String query) {
+    ref?.read(productSearchProvider(categoryId).notifier).getResult(query);
   }
 }

@@ -110,7 +110,8 @@ class _TransactionHistoryScreenState
   }
 
   String _getSubtitle(TransactionModel model) {
-    final formattedDate = DateFormat("dd-MM-yy").format(model.timestamp);
+    final formattedDate =
+        DateFormat("dd-MM-yyyy").add_jm().format(model.timestamp);
     if (model.transactionType == TransactionType.buy) {
       return """Total cost price - ${model.costPrice.toStringAsFixed(2)} x ${model.quantity.toStringAsFixed(2)} = ${(model.costPrice * model.quantity).toStringAsFixed(2)}
 Date - $formattedDate""";

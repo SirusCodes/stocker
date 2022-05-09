@@ -34,6 +34,8 @@ class TransactionService {
       collectionId: _collectionId,
       cursor: cursor,
       limit: 15,
+      orderAttributes: ["timestamp"],
+      orderTypes: ["DESC"],
       queries: transactionType != null
           ? [
               Query.equal(

@@ -6,6 +6,7 @@ import '../domain/models/transaction_model.dart';
 
 final _mockTransactionHistory = [
   TransactionModel(
+    customerId: "",
     productId: "productId",
     productName: "Prod",
     quantity: 10,
@@ -15,6 +16,7 @@ final _mockTransactionHistory = [
     timestamp: DateTime.now(),
   ),
   TransactionModel(
+    customerId: "",
     productId: "productId",
     productName: "Prod",
     quantity: 10,
@@ -24,6 +26,7 @@ final _mockTransactionHistory = [
     timestamp: DateTime.now(),
   ),
   TransactionModel(
+    customerId: "",
     productId: "productId",
     productName: "Prod",
     quantity: 10,

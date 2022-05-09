@@ -7,12 +7,16 @@ part 'transaction_model.g.dart';
 
 @JsonSerializable()
 class TransactionModel extends Equatable {
-  final String productId, productName;
+  @JsonKey(ignore: true)
+  final String? id;
+  final String productId, productName, customerId;
   final double quantity, sellingPrice, costPrice;
   final DateTime timestamp;
   final TransactionType transactionType;
 
   const TransactionModel({
+    this.id,
+    required this.customerId,
     required this.productId,
     required this.productName,
     required this.quantity,
@@ -29,6 +33,8 @@ class TransactionModel extends Equatable {
 
   @override
   List<Object?> get props => [
+        customerId,
+        id,
         productId,
         productName,
         quantity,
@@ -37,4 +43,28 @@ class TransactionModel extends Equatable {
         transactionType,
         timestamp,
       ];
+
+  TransactionModel copyWith({
+    String? id,
+    String? customerId,
+    String? productId,
+    String? productName,
+    double? quantity,
+    double? sellingPrice,
+    double? costPrice,
+    DateTime? timestamp,
+    TransactionType? transactionType,
+  }) {
+    return TransactionModel(
+      id: id ?? this.id,
+      customerId: customerId ?? this.customerId,
+      productId: productId ?? this.productId,
+      quantity: quantity ?? this.quantity,
+      sellingPrice: sellingPrice ?? this.sellingPrice,
+      productName: productName ?? this.productName,
+      costPrice: costPrice ?? this.costPrice,
+      timestamp: timestamp ?? this.timestamp,
+      transactionType: transactionType ?? this.transactionType,
+    );
+  }
 }

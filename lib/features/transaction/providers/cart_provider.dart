@@ -25,7 +25,7 @@ class CartProvider extends ChangeNotifier {
   }
 
   void clear() {
-    cartItems.clear();
+    _cartItems.clear();
     _subtotal = 0;
     _discount = 0;
     _total = 0;

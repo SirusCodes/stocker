@@ -8,6 +8,7 @@ part of 'transaction_model.dart';
 
 TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
     TransactionModel(
+      customerId: json['customerId'] as String,
       productId: json['productId'] as String,
       productName: json['productName'] as String,
       quantity: (json['quantity'] as num).toDouble(),
@@ -22,6 +23,7 @@ Map<String, dynamic> _$TransactionModelToJson(TransactionModel instance) =>
     <String, dynamic>{
       'productId': instance.productId,
       'productName': instance.productName,
+      'customerId': instance.customerId,
       'quantity': instance.quantity,
       'sellingPrice': instance.sellingPrice,
       'costPrice': instance.costPrice,

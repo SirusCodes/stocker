@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../../../utils/validators.dart';
+import '../../customer/domain/models/customer_model.dart';
 import '../providers/cart_provider.dart';
+import '../providers/transaction_provider.dart';
 import '../widgets/show_cart_options_dialog.dart';
 
 const _mockNumbers = ["9876543210", "0123456789"];
@@ -19,12 +21,31 @@ class AddTransactionScreen extends ConsumerWidget {
     final cartItems =
         ref.watch(cartProvider.select((value) => value.cartItems));
 
-    ref.listen<CartProvider>(
-      cartProvider,
-      (_, next) {
-        if (next.cartItems.isEmpty) Navigator.pop(context);
-      },
-    );
+    ref
+      ..listen<CartProvider>(
+        cartProvider,
+        (_, next) {
+          if (next.cartItems.isEmpty) Navigator.pop(context);
+        },
+      )
+      ..listen<TransactionState>(transactionProvider, (previous, next) {
+        switch (next) {
+          case TransactionState.success:
+            ref.read(cartProvider).clear();
+            Navigator.pop(context);
+            Navigator.pop(context);
+            break;
+          case TransactionState.inProgress:
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (_) => const Dialog(child: _LoadingDialog()),
+            );
+            break;
+          case TransactionState.initial:
+            break;
+        }
+      });
 
     return Scaffold(
       body: CustomScrollView(
@@ -231,6 +252,15 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
 
   void _onContinuePressed() {
     if (!_formKey.currentState!.validate()) return;
+
+    ref.read(transactionProvider.notifier).saveTransaction(
+          customer: CustomerModel(
+            name: _nameController.text,
+            email: _emailController.text,
+            phone: _phoneController.text,
+          ),
+          totalDiscount: double.tryParse(_discountController.text) ?? 0,
+        );
   }
 
   bool get _canContinue =>
@@ -266,6 +296,27 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [const Text("Total"), Text("₹$total")],
+      ),
+    );
+  }
+}
+
+class _LoadingDialog extends StatelessWidget {
+  const _LoadingDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          CircularProgressIndicator(),
+          SizedBox(height: 10),
+          Text("Saving your requests...")
+        ],
       ),
     );
   }

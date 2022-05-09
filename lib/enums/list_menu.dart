@@ -1,1 +1,1 @@
-enum ListMenu { edit, delete }
+enum ListMenu { edit, delete, addStock }

@@ -6,37 +6,8 @@ import '../../extensions/extensions.dart';
 import '../../features/product/domain/domain.dart';
 import '../../features/product/presentation/save_product_screen.dart';
 import '../../features/product/providers/product_provider.dart';
+import '../../features/transaction/widgets/show_add_stock_dialog.dart';
 import '../../features/transaction/widgets/show_cart_options_dialog.dart';
-
-const mockProducts = [
-  ProductModel(
-    id: "prod1",
-    categoryId: "cat",
-    name: "Product A",
-    costPrice: 10,
-    sellingPrice: 20,
-    quantity: 50,
-    color: Colors.amber,
-  ),
-  ProductModel(
-    id: "prod2",
-    categoryId: "cat",
-    name: "Product B",
-    costPrice: 10,
-    sellingPrice: 20,
-    quantity: 5,
-    color: Colors.black12,
-  ),
-  ProductModel(
-    id: "prod3",
-    categoryId: "cat",
-    name: "Product C",
-    costPrice: 10,
-    sellingPrice: 20,
-    quantity: 10,
-    color: Colors.deepPurpleAccent,
-  ),
-];
 
 class ProductListTile extends ConsumerWidget {
   const ProductListTile({Key? key, required this.product}) : super(key: key);
@@ -84,12 +55,19 @@ class ProductListTile extends ConsumerWidget {
                   .read(productProvider(product.categoryId).notifier)
                   .deleteProduct(product);
               break;
+            case ListMenu.addStock:
+              showAddStockDialog(context, product: product);
+              break;
           }
         },
         itemBuilder: (context) => [
           const PopupMenuItem(
             value: ListMenu.edit,
             child: Text("Edit"),
+          ),
+          const PopupMenuItem(
+            value: ListMenu.addStock,
+            child: Text("Add Stock"),
           ),
           PopupMenuItem(
             value: ListMenu.delete,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/widgets/password_form_field.dart';
+import '../domain/services/user_service.dart';
 
 class UpdatePasswordScreen extends StatefulWidget {
   const UpdatePasswordScreen({Key? key}) : super(key: key);
@@ -64,13 +66,19 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
               const SizedBox(height: 15),
               SizedBox(
                 width: double.maxFinite,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) return;
+                child: Consumer(
+                  builder: (context, ref, child) => ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) return;
 
-                    // TODO: update password
-                  },
-                  child: const Text("Change password"),
+                      //* Add error handling
+                      await ref.read(userService).updatePassword(
+                            newPassword: _newPassword.text,
+                            oldPassword: _currentPassword.text,
+                          );
+                    },
+                    child: const Text("Change password"),
+                  ),
                 ),
               ),
             ],

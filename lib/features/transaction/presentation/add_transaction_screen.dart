@@ -5,11 +5,10 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import '../../../utils/validators.dart';
 import '../../customer/domain/models/customer_model.dart';
+import '../../customer/domain/services/customer_service.dart';
 import '../providers/cart_provider.dart';
 import '../providers/transaction_provider.dart';
 import '../widgets/show_cart_options_dialog.dart';
-
-const _mockNumbers = ["9876543210", "0123456789"];
 
 class AddTransactionScreen extends ConsumerWidget {
   const AddTransactionScreen({Key? key}) : super(key: key);
@@ -97,6 +96,8 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
   final _emailController = TextEditingController();
   final _discountController = TextEditingController();
 
+  CustomerModel? _selectedCustomer;
+
   @override
   void initState() {
     super.initState();
@@ -123,7 +124,7 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
         key: _formKey,
         child: Column(
           children: [
-            TypeAheadFormField<String>(
+            TypeAheadFormField<CustomerModel>(
               validator: (value) {
                 if (value == null || value.isEmpty) return "Enter number";
                 if (int.parse(value) < 10) return "Check number";
@@ -144,20 +145,22 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
                   hintText: "9876543210",
                 ),
               ),
-              onSuggestionSelected: (suggestion) {
-                _phoneController.text = suggestion;
-                // TODO: update other fields on click
+              onSuggestionSelected: (customer) {
+                _phoneController.text = customer.phone;
+                _nameController.text = customer.name;
+                _emailController.text = customer.email;
+                _selectedCustomer = customer;
               },
               noItemsFoundBuilder: (_) {
                 return ListTile(title: Text(_phoneController.text));
               },
-              itemBuilder: (context, suggestion) {
-                return ListTile(title: Text(suggestion));
+              itemBuilder: (context, customer) {
+                return ListTile(title: Text(customer.phone));
               },
               suggestionsCallback: (pattern) {
-                return _mockNumbers
-                    .where((element) => element.startsWith(pattern))
-                    .toList();
+                return ref
+                    .read(customerService)
+                    .searchCustomerFromNumber(pattern);
               },
             ),
             const SizedBox(height: 10),
@@ -198,6 +201,9 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
               controller: _discountController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
               validator: (value) {
                 if (value == null || value.isEmpty) return null;
 
@@ -254,11 +260,12 @@ class _TransactionFormState extends ConsumerState<_TransactionForm> {
     if (!_formKey.currentState!.validate()) return;
 
     ref.read(transactionProvider.notifier).saveTransaction(
-          customer: CustomerModel(
-            name: _nameController.text,
-            email: _emailController.text,
-            phone: _phoneController.text,
-          ),
+          customer: _selectedCustomer ??
+              CustomerModel(
+                name: _nameController.text,
+                email: _emailController.text,
+                phone: _phoneController.text,
+              ),
           totalDiscount: double.tryParse(_discountController.text) ?? 0,
         );
   }

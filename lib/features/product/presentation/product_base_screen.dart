@@ -10,7 +10,7 @@ import '../providers/product_category_provider.dart';
 import '../providers/product_provider.dart';
 import '../providers/product_search_provider.dart';
 import '../widgets/product_list_section.dart';
-import '../widgets/product_statistics_section.dart';
+// import '../widgets/product_statistics_section.dart';
 import 'save_product_screen.dart';
 
 class ProductBaseScreen extends StatefulWidget {
@@ -25,11 +25,11 @@ class ProductBaseScreen extends StatefulWidget {
 }
 
 class _ProductBaseScreenState extends State<ProductBaseScreen> {
-  int _selectedSection = 0;
+  final int _selectedSection = 0;
 
   static const _screens = [
     ProductListSection(),
-    ProductStatisticsSection(),
+    // ProductStatisticsSection(),
   ];
 
   @override
@@ -73,22 +73,22 @@ class _ProductBaseScreenState extends State<ProductBaseScreen> {
               : null,
         ),
         body: _screens[_selectedSection],
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _selectedSection,
-          onDestinationSelected: (value) {
-            setState(() => _selectedSection = value);
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.list_rounded),
-              label: "Products",
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.bar_chart_rounded),
-              label: "Statistics",
-            ),
-          ],
-        ),
+        // bottomNavigationBar: NavigationBar(
+        //   selectedIndex: _selectedSection,
+        //   onDestinationSelected: (value) {
+        //     setState(() => _selectedSection = value);
+        //   },
+        //   destinations: const [
+        //     NavigationDestination(
+        //       icon: Icon(Icons.list_rounded),
+        //       label: "Products",
+        //     ),
+        //     NavigationDestination(
+        //       icon: Icon(Icons.bar_chart_rounded),
+        //       label: "Statistics",
+        //     ),
+        //   ],
+        // ),
         floatingActionButton: const CartFAB(),
       ),
     );

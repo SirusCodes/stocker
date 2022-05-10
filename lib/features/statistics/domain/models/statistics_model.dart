@@ -13,6 +13,8 @@ class StatisticsModel {
     Map<DateTime, double> data,
     DateTime startDate,
   ) {
+    if (data.isEmpty) return StatisticsModel._({}, [], 0, 0);
+
     final _dataPoint = <int, double>{};
     final _xLabel = <String>[];
 

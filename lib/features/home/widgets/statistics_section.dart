@@ -1,5 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../statistics/domain/models/statistics_model.dart';
+import '../../statistics/providers/statistics_provider.dart';
 
 class StatisticsSection extends StatefulWidget {
   const StatisticsSection({Key? key}) : super(key: key);
@@ -11,19 +15,36 @@ class StatisticsSection extends StatefulWidget {
 class _StatisticsSectionState extends State<StatisticsSection> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(15),
-      children: [
-        _buildGraph(title: "Sales in a month"),
-        _buildGraph(title: "Profits in a month"),
-        _buildGraph(title: "Top selling product"),
-        _buildGraph(title: "Most profitable product"),
-      ],
+    return Consumer(
+      builder: (context, ref, child) {
+        return ref.watch(statisticsProvider).when(
+              data: (data) => ListView(
+                padding: const EdgeInsets.all(15),
+                children: [
+                  _buildGraph(
+                    title: "Sales in a month",
+                    statistics: data.salesInMonth,
+                  ),
+                  const SizedBox(height: 30),
+                  _buildGraph(
+                    title: "Profits in a month",
+                    statistics: data.profitInMonth,
+                  ),
+                  // _buildGraph(title: "Top selling product"),
+                  // _buildGraph(title: "Most profitable product"),
+                ],
+              ),
+              error: (_, __) =>
+                  const Center(child: Text("Something went wrong...")),
+              loading: () => const Center(child: CircularProgressIndicator()),
+            );
+      },
     );
   }
 
   Widget _buildGraph({
     required String title,
+    required StatisticsModel statistics,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,35 +56,18 @@ class _StatisticsSectionState extends State<StatisticsSection> {
         const SizedBox(height: 20),
         AspectRatio(
           aspectRatio: 1.70,
-          child: LineChart(_getLineChartData()),
+          child: LineChart(_getLineChartData(statistics)),
         ),
       ],
     );
   }
 
-  LineChartData _getLineChartData() {
+  LineChartData _getLineChartData(StatisticsModel statistics) {
     final colorScheme = Theme.of(context).colorScheme;
     return LineChartData(
       borderData: FlBorderData(
         show: true,
         border: Border.all(color: colorScheme.primaryContainer),
-      ),
-      gridData: FlGridData(
-        show: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: colorScheme.primaryContainer,
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: colorScheme.primaryContainer,
-            strokeWidth: 1,
-          );
-        },
       ),
       titlesData: FlTitlesData(
         show: true,
@@ -76,40 +80,40 @@ class _StatisticsSectionState extends State<StatisticsSection> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 30,
-            interval: 1,
+            getTitlesWidget: (value, metadata) {
+              return Text(statistics.xLabel[value.toInt()]);
+            },
           ),
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
-            reservedSize: 42,
+            getTitlesWidget: (value, metadata) {
+              if (statistics.maxY < value || statistics.minY > value) {
+                return const SizedBox.shrink();
+              }
+
+              return Text(value.toStringAsFixed(0));
+            },
+            reservedSize: 40,
           ),
         ),
       ),
       minX: 0,
-      maxX: 6.5,
-      minY: 0,
-      maxY: 10,
+      maxX: 30,
+      minY: (statistics.minY - (statistics.maxY * .1)) //
+          .clamp(0, statistics.minY),
+      maxY: statistics.maxY + (statistics.maxY * .1),
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: statistics.dataPoint.entries
+              .map((e) => FlSpot(e.key.toDouble(), e.value))
+              .toList(),
           isCurved: true,
           barWidth: 5,
           color: colorScheme.primary,
           isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: false,
-          ),
+          dotData: FlDotData(show: false),
         ),
       ],
     );

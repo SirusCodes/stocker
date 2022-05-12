@@ -4,7 +4,11 @@ It is an inventory and sales management app made using [Flutter](flutter.dev) an
 
 This project is made for [#appwritehack](https://dev.to/devteam/announcing-the-appwrite-hackathon-on-dev-1oc0) submitted at [here](https://dev.to/siruswrites/stocker-an-inventory-and-crm-app-made-using-flutter-and-appwrite-m65).
 
-#### Screenshots
+## Video
+
+[![Stocker - An Inventory and CRM app made using Flutter and Appwrite](https://img.youtube.com/vi/PQvL0BjCfLA/0.jpg)](https://www.youtube.com/watch?v=PQvL0BjCfLA)
+
+## Screenshots
 
 |                                                                                                 |                                                                                    |                                                                          |
 | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
@@ -20,3 +24,55 @@ This project is made for [#appwritehack](https://dev.to/devteam/announcing-the-a
 | Once a product is created a floating action will be present on all screens to move for checkout | Checkout page                                                                      | Other details will be auto-filled as soon as you selects a phone number  |
 |                                                                                                 | ![Discount](/mockups/discount.png)                                                 |                                                                          |
 |                                                                                                 | You can either add discount by percentage or a specific amount by clicking on icon |                                                                          |
+
+## Setup
+
+First of all you need to setup [Appwrite](https://appwrite.io/docs/installation).
+
+After creating a project on Appwrite enable platforms which ever you want to develop for with identifier as `com.darshan.stocker`
+
+Create collections in database with attributes:
+
+**category:**
+
+- name: string
+- productCount: integer
+- color: integer
+
+**product:**
+
+- categoryId: string
+- name: string
+- costPrice: double
+- sellingPrice: double
+- quantity: double
+- color: integer
+
+**customer:**
+
+- name: string
+- email: email
+- phone: string
+
+**transaction:**
+
+- productId: string
+- productName: string
+- quantity: double
+- sellingPrice: double
+- costPrice: double
+- timestamp: string
+- transactionType: enum(buy, sell)
+- customerId: string
+
+To update `category.productCount` I have used functions to deploy it
+
+Use [appwrite-cli](https://appwrite.io/docs/command-line)
+
+The function could be found in `./appwrite-functions` directory
+
+After setting up everything on appwrite we should update the secrets
+
+Rename `secrets.dart.example` to `secrets.dart` and fill in the empty string.
+
+Run `flutter pub get` to get all the dependencies and finally `flutter run` to run the app

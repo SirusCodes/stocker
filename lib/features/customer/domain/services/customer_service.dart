@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../secrets.dart';
 import '../../../../shared/providers/appwrite_provider.dart';
 import '../models/customer_model.dart';
 
@@ -13,11 +14,9 @@ class CustomerService {
 
   final Database _db;
 
-  static const _collectionId = "6279092297a0ef94c695";
-
   Future<List<CustomerModel>> searchCustomerFromNumber(String query) async {
     final docs = await _db.listDocuments(
-      collectionId: _collectionId,
+      collectionId: Secrets.customerCollectionId,
       limit: 5,
       queries: [Query.search("phone", query)],
     );
@@ -29,7 +28,7 @@ class CustomerService {
 
   Future<CustomerModel> addCustomer(CustomerModel customer) async {
     final doc = await _db.createDocument(
-      collectionId: _collectionId,
+      collectionId: Secrets.customerCollectionId,
       documentId: "unique()",
       data: customer.toJson(),
     );

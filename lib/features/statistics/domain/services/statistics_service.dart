@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../secrets.dart';
 import '../../../../shared/providers/appwrite_provider.dart';
 import '../../../transaction/domain/domain.dart';
 
@@ -14,8 +15,6 @@ class StatisticsService {
 
   final Database _db;
 
-  static const _collectionId = "627913819b28215b43db";
-
   Future<List<TransactionModel>> getDataFromRange({
     required DateTime startDate,
     required DateTime endDate,
@@ -26,7 +25,7 @@ class StatisticsService {
 
     while (true) {
       final docs = await _db.listDocuments(
-        collectionId: _collectionId,
+        collectionId: Secrets.transactionCollectionId,
         cursor: cursor,
         limit: 100,
         orderAttributes: ["timestamp"],

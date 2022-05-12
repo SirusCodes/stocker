@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../enums/enums.dart';
+import '../../../../secrets.dart';
 import '../../../../shared/providers/appwrite_provider.dart';
 import '../domain.dart';
 
@@ -14,11 +15,9 @@ class TransactionService {
 
   final Database _db;
 
-  static const _collectionId = "627913819b28215b43db";
-
   Future<TransactionModel> addTransaction(TransactionModel transaction) async {
     final doc = await _db.createDocument(
-      collectionId: _collectionId,
+      collectionId: Secrets.transactionCollectionId,
       documentId: "unique()",
       data: transaction.toJson(),
     );
@@ -31,7 +30,7 @@ class TransactionService {
     TransactionType? transactionType,
   }) async {
     final docs = await _db.listDocuments(
-      collectionId: _collectionId,
+      collectionId: Secrets.transactionCollectionId,
       cursor: cursor,
       limit: 15,
       orderAttributes: ["timestamp"],

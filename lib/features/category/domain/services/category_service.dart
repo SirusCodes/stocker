@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../secrets.dart';
 import '../../../../shared/providers/appwrite_provider.dart';
 
 import '../domain.dart';
@@ -13,11 +14,9 @@ class CategoryService {
   CategoryService(Reader read) : _db = read(dbProvider);
   final Database _db;
 
-  static const _categoryId = "6277b82c8325e59d9529";
-
   Future<CategoryModel> createCategory(CategoryModel category) async {
     final doc = await _db.createDocument(
-      collectionId: _categoryId,
+      collectionId: Secrets.categoryCollectionId,
       documentId: "unique()",
       data: category.toJson(),
     );
@@ -30,7 +29,7 @@ class CategoryService {
     String order = "ASC",
   }) async {
     final docs = await _db.listDocuments(
-      collectionId: _categoryId,
+      collectionId: Secrets.categoryCollectionId,
       limit: 10,
       cursor: cursor,
       orderAttributes: ["name"],
@@ -44,7 +43,7 @@ class CategoryService {
 
   Future<CategoryModel> updateCategory(CategoryModel category) async {
     await _db.updateDocument(
-      collectionId: _categoryId,
+      collectionId: Secrets.categoryCollectionId,
       documentId: category.id!,
       data: category.toJson(),
     );
@@ -54,7 +53,7 @@ class CategoryService {
 
   Future<List<CategoryModel>> searchCategory(String query) async {
     final docs = await _db.listDocuments(
-      collectionId: _categoryId,
+      collectionId: Secrets.categoryCollectionId,
       limit: 8,
       queries: [Query.search("name", query)],
     );

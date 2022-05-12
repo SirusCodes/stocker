@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../secrets.dart';
 import '../../../../shared/providers/appwrite_provider.dart';
 import '../domain.dart';
 
@@ -12,11 +13,10 @@ class ProductService {
   ProductService(Reader read) : _db = read(dbProvider);
 
   final Database _db;
-  static const collectionId = "627808bbf2cd08f24c12";
 
   Future<ProductModel> createProduct(ProductModel product) async {
     final doc = await _db.createDocument(
-      collectionId: collectionId,
+      collectionId: Secrets.productCollectionId,
       documentId: "unique()",
       data: product.toJson(),
     );
@@ -26,7 +26,7 @@ class ProductService {
 
   Future<ProductModel> updateProduct(ProductModel product) async {
     await _db.updateDocument(
-      collectionId: collectionId,
+      collectionId: Secrets.productCollectionId,
       documentId: product.id!,
       data: product.toJson(),
     );
@@ -36,7 +36,7 @@ class ProductService {
 
   Future<void> deleteProduct(String productId) {
     return _db.deleteDocument(
-      collectionId: collectionId,
+      collectionId: Secrets.productCollectionId,
       documentId: productId,
     );
   }
@@ -47,7 +47,7 @@ class ProductService {
     String order = "ASC",
   }) async {
     final docs = await _db.listDocuments(
-      collectionId: collectionId,
+      collectionId: Secrets.productCollectionId,
       limit: 10,
       cursor: cursor,
       orderAttributes: ["name"],
@@ -65,7 +65,7 @@ class ProductService {
     required String query,
   }) async {
     final docs = await _db.listDocuments(
-      collectionId: collectionId,
+      collectionId: Secrets.productCollectionId,
       limit: 8,
       queries: [
         Query.equal("categoryId", categoryId),
@@ -80,7 +80,7 @@ class ProductService {
 
   Future<List<ProductModel>> overallSearch(String query) async {
     final docs = await _db.listDocuments(
-      collectionId: collectionId,
+      collectionId: Secrets.productCollectionId,
       limit: 8,
       queries: [Query.search("name", query)],
     );

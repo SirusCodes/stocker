@@ -1,5 +1,7 @@
 # Stocker
 
+![Stocker banner](/mockups/stocker%20thumb.webp)
+
 It is an inventory and sales management app made using [Flutter](flutter.dev) and [Appwrite](appwrite.io).
 
 This project is made for [#appwritehack](https://dev.to/devteam/announcing-the-appwrite-hackathon-on-dev-1oc0) submitted at [here](https://dev.to/siruswrites/stocker-an-inventory-and-crm-app-made-using-flutter-and-appwrite-m65).

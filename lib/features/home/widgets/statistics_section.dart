@@ -15,30 +15,32 @@ class StatisticsSection extends StatefulWidget {
 class _StatisticsSectionState extends State<StatisticsSection> {
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) {
-        return ref.watch(statisticsProvider).when(
-              data: (data) => ListView(
-                padding: const EdgeInsets.all(15),
-                children: [
-                  _buildGraph(
-                    title: "Sales in a month",
-                    statistics: data.salesInMonth,
-                  ),
-                  const SizedBox(height: 30),
-                  _buildGraph(
-                    title: "Profits in a month",
-                    statistics: data.profitInMonth,
-                  ),
-                  // _buildGraph(title: "Top selling product"),
-                  // _buildGraph(title: "Most profitable product"),
-                ],
-              ),
-              error: (_, __) =>
-                  const Center(child: Text("Something went wrong...")),
-              loading: () => const Center(child: CircularProgressIndicator()),
-            );
-      },
+    return SafeArea(
+      child: Consumer(
+        builder: (context, ref, child) {
+          return ref.watch(statisticsProvider).when(
+                data: (data) => ListView(
+                  padding: const EdgeInsets.all(15),
+                  children: [
+                    _buildGraph(
+                      title: "Sales in a month",
+                      statistics: data.salesInMonth,
+                    ),
+                    const SizedBox(height: 30),
+                    _buildGraph(
+                      title: "Profits in a month",
+                      statistics: data.profitInMonth,
+                    ),
+                    // _buildGraph(title: "Top selling product"),
+                    // _buildGraph(title: "Most profitable product"),
+                  ],
+                ),
+                error: (_, __) =>
+                    const Center(child: Text("Something went wrong...")),
+                loading: () => const Center(child: CircularProgressIndicator()),
+              );
+        },
+      ),
     );
   }
 

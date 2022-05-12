@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/providers/theme_provider.dart';
 import '../../authentication/providers/auth_provider.dart';
-import '../../share_store/presentation/store_manager_screen.dart';
+// import '../../share_store/presentation/store_manager_screen.dart';
 import '../../transaction/presentation/transaction_history_screen.dart';
 import '../../users/presentation/profile_screen.dart';
 
@@ -12,64 +12,67 @@ class MoreSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          leading: const CircleAvatar(child: Icon(Icons.person)),
-          title: const Text("Darshan Rander"),
-          subtitle: const Text("darshandrander@gmail.com"),
-          onTap: () => Navigator.pushNamed(context, ProfileScreen.path),
-        ),
-        ListTile(
-          leading: const CircleAvatar(child: Icon(Icons.people_rounded)),
-          title: const Text("Store manager"),
-          subtitle: const Text("Add or remove access to your store"),
-          onTap: () => Navigator.pushNamed(context, StoreManagerScreen.path),
-        ),
-        ListTile(
-          leading: const CircleAvatar(child: Icon(Icons.access_time_rounded)),
-          title: const Text("Current stock"),
-          subtitle: const Text("View the list of current product quantity"),
-          onTap: () {},
-        ),
-        Consumer(
-          builder: (context, ref, child) => ListTile(
-            leading: const CircleAvatar(child: Icon(Icons.color_lens_rounded)),
-            title: const Text("Theme"),
-            subtitle: const Text("Change app theme"),
-            onTap: () async {
-              final theme = await _showThemeSelector(
-                context: context,
-                selected: _getCurrentThemeMode(context),
-              );
+    return SafeArea(
+      child: Column(
+        children: [
+          ListTile(
+            leading: const CircleAvatar(child: Icon(Icons.person)),
+            title: const Text("Darshan"),
+            subtitle: const Text("darshan@gmail.com"),
+            onTap: () => Navigator.pushNamed(context, ProfileScreen.path),
+          ),
+          // ListTile(
+          //   leading: const CircleAvatar(child: Icon(Icons.people_rounded)),
+          //   title: const Text("Store manager"),
+          //   subtitle: const Text("Add or remove access to your store"),
+          //   onTap: () => Navigator.pushNamed(context, StoreManagerScreen.path),
+          // ),
+          // ListTile(
+          //   leading: const CircleAvatar(child: Icon(Icons.access_time_rounded)),
+          //   title: const Text("Current stock"),
+          //   subtitle: const Text("View the list of current product quantity"),
+          //   onTap: () {},
+          // ),
+          Consumer(
+            builder: (context, ref, child) => ListTile(
+              leading:
+                  const CircleAvatar(child: Icon(Icons.color_lens_rounded)),
+              title: const Text("Theme"),
+              subtitle: const Text("Change app theme"),
+              onTap: () async {
+                final theme = await _showThemeSelector(
+                  context: context,
+                  selected: _getCurrentThemeMode(context),
+                );
 
-              if (theme == null) return;
+                if (theme == null) return;
 
-              ref.read(themeProvider.notifier).setTheme(theme);
-            },
+                ref.read(themeProvider.notifier).setTheme(theme);
+              },
+            ),
           ),
-        ),
-        ListTile(
-          leading: const CircleAvatar(child: Icon(Icons.history_rounded)),
-          title: const Text("Transaction history"),
-          subtitle: const Text("View history of all the transaction"),
-          onTap: () => Navigator.pushNamed(
-            context,
-            TransactionHistoryScreen.path,
+          ListTile(
+            leading: const CircleAvatar(child: Icon(Icons.history_rounded)),
+            title: const Text("Transaction history"),
+            subtitle: const Text("View history of all the transaction"),
+            onTap: () => Navigator.pushNamed(
+              context,
+              TransactionHistoryScreen.path,
+            ),
           ),
-        ),
-        const Spacer(),
-        Consumer(
-          builder: (context, ref, child) => ListTile(
-            leading: const CircleAvatar(child: Icon(Icons.logout_rounded)),
-            title: const Text("Log out"),
-            subtitle: const Text("Log out current user"),
-            onTap: () {
-              ref.read(authProvider.notifier).logout();
-            },
+          const Spacer(),
+          Consumer(
+            builder: (context, ref, child) => ListTile(
+              leading: const CircleAvatar(child: Icon(Icons.logout_rounded)),
+              title: const Text("Log out"),
+              subtitle: const Text("Log out current user"),
+              onTap: () {
+                ref.read(authProvider.notifier).logout();
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

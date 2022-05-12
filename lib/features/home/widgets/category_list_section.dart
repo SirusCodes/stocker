@@ -43,50 +43,51 @@ class _CategoryListSectionState extends ConsumerState<CategoryListSection> {
   @override
   Widget build(BuildContext context) {
     final sort = ref.watch(categorySortProvider);
-    return NestedScrollView(
-      controller: _scrollController,
-      headerSliverBuilder: (context, innerBoxIsScrolled) => [
-        SliverAppBar(
-          title: const Text("Stocker"),
-          actions: [
-            IconButton(
-              onPressed: () => Navigator.pushNamed(
-                context,
-                SaveCategoryScreen.path,
-              ),
-              icon: const Icon(Icons.add_rounded),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Stocker"),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.pushNamed(
+              context,
+              SaveCategoryScreen.path,
             ),
-            SortButton(
-              selectedSort: sort,
-              onSelected: (sort) =>
-                  ref.read(categorySortProvider.notifier).state = sort,
+            icon: const Icon(Icons.add_rounded),
+          ),
+          SortButton(
+            selectedSort: sort,
+            onSelected: (sort) =>
+                ref.read(categorySortProvider.notifier).state = sort,
+          ),
+          IconButton(
+            onPressed: () => showCustomSearch(
+              context: context,
+              delegate: _CategorySearchDelegate(),
             ),
-            IconButton(
-              onPressed: () => showCustomSearch(
-                context: context,
-                delegate: _CategorySearchDelegate(),
-              ),
-              tooltip: "Search category ",
-              icon: const Icon(Icons.search_rounded),
-            ),
-          ],
-        ),
-      ],
+            tooltip: "Search category ",
+            icon: const Icon(Icons.search_rounded),
+          ),
+        ],
+      ),
       body: ref.watch(categoryProvider).when(
             data: (categories) {
-              return ListView.builder(
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  final category = categories[index];
-                  return CategoryListTile(
-                    category: category,
-                    onTap: () => Navigator.pushNamed(
-                      context,
-                      ProductBaseScreen.path,
-                      arguments: category,
-                    ),
-                  );
-                },
+              return RefreshIndicator(
+                onRefresh: () => ref.refresh(categoryProvider.future),
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    final category = categories[index];
+                    return CategoryListTile(
+                      category: category,
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        ProductBaseScreen.path,
+                        arguments: category,
+                      ),
+                    );
+                  },
+                ),
               );
             },
             error: (_, __) => const Center(

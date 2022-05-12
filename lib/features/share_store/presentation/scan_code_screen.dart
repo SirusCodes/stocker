@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
+// import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScanCodeScreen extends StatelessWidget {
   const ScanCodeScreen({Key? key}) : super(key: key);
@@ -20,13 +20,13 @@ class ScanCodeScreen extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back_rounded),
               ),
             ),
-            MobileScanner(
-              allowDuplicates: false,
-              onDetect: (barcode, args) {
-                // TODO: make request to add to team
-                Navigator.pop(context);
-              },
-            ),
+            // MobileScanner(
+            //   allowDuplicates: false,
+            //   onDetect: (barcode, args) {
+            //     // TODO: make request to add to team
+            //     Navigator.pop(context);
+            //   },
+            // ),
           ],
         ),
       ),

@@ -1,11 +1,13 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../secrets.dart';
+
 final _appwriteProvider = Provider<Client>((ref) {
   return Client(
-    endPoint: const String.fromEnvironment("APPWRITE_URL") + "/v1",
+    endPoint: Secrets.appwriteURL + "/v1",
     selfSigned: true,
-  )..setProject(const String.fromEnvironment("PROJECT_ID"));
+  )..setProject(Secrets.appwriteProject);
 });
 
 final accountsProvider = Provider<Account>((ref) {

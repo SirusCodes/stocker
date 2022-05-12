@@ -1,4 +1,4 @@
-package com.darshan.stocker_appwrite
+package com.darshan.stocker
 
 import io.flutter.embedding.android.FlutterActivity
 

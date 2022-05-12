@@ -39,7 +39,6 @@ dependencies:
   flutter_typeahead: ^3.2.5
   badges: ^2.0.2
   pin_code_fields: ^7.4.0
-  mobile_scanner: ^1.0.0
   qr_flutter: ^4.0.0
   appwrite: ^4.0.2
 

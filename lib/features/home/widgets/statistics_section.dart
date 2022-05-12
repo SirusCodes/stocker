@@ -56,9 +56,12 @@ class _StatisticsSectionState extends State<StatisticsSection> {
           style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 20),
-        AspectRatio(
-          aspectRatio: 1.70,
-          child: LineChart(_getLineChartData(statistics)),
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: AspectRatio(
+            aspectRatio: 1.50,
+            child: LineChart(_getLineChartData(statistics)),
+          ),
         ),
       ],
     );
@@ -111,7 +114,7 @@ class _StatisticsSectionState extends State<StatisticsSection> {
           spots: statistics.dataPoint.entries
               .map((e) => FlSpot(e.key.toDouble(), e.value))
               .toList(),
-          isCurved: true,
+          isCurved: false,
           barWidth: 5,
           color: colorScheme.primary,
           isStrokeCapRound: true,

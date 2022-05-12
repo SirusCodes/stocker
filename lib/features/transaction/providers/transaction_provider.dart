@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../enums/enums.dart';
 import '../../customer/domain/models/customer_model.dart';
 import '../../customer/domain/services/customer_service.dart';
+import '../../product/providers/product_provider.dart';
 import '../domain/domain.dart';
 import '../domain/services/transaction_service.dart';
 import 'cart_provider.dart';
@@ -54,7 +55,13 @@ class TransactionProvider extends StateNotifier<TransactionState> {
         timestamp: DateTime.now(),
       );
 
-      await read(transactionService).addTransaction(transaction);
+      await Future.wait([
+        read(transactionService).addTransaction(transaction),
+        read(productProvider(product.categoryId).notifier)
+            .updateProduct(product.copyWith(
+          quantity: product.quantity - item.quantityInCart,
+        )),
+      ]);
     }
 
     state = TransactionState.success;

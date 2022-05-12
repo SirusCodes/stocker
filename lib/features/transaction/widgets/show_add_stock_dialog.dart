@@ -62,6 +62,7 @@ class __QuantityOptionState extends State<_QuantityOption> {
               hintText: "1.5",
             ),
           ),
+          const SizedBox(height: 10),
           TextField(
             controller: _costPriceController,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -70,6 +71,7 @@ class __QuantityOptionState extends State<_QuantityOption> {
               hintText: "100",
             ),
           ),
+          const SizedBox(height: 10),
           TextField(
             controller: _sellingPriceController,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),

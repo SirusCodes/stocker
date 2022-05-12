@@ -28,19 +28,20 @@ class StatisticsService {
       final docs = await _db.listDocuments(
         collectionId: _collectionId,
         cursor: cursor,
+        limit: 100,
         orderAttributes: ["timestamp"],
         orderTypes: ["ASC"],
         queries: [
           Query.equal("transactionType", "sell"),
-          // Query.greaterEqual("timestamp", startDate.toIso8601String()),
-          // Query.lesserEqual("timestamp", endDate.toIso8601String()),
+          Query.greaterEqual("timestamp", startDate.toIso8601String()),
+          Query.lesserEqual("timestamp", endDate.toIso8601String()),
         ],
       );
 
       _transaction
           .addAll(docs.documents.map((e) => TransactionModel.fromJson(e.data)));
 
-      if (docs.total < 100) break;
+      if (_transaction.length >= docs.total) break;
     }
 
     return _transaction;
